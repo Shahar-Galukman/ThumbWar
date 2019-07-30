@@ -4,10 +4,16 @@ public class SwipeDetector : MonoBehaviour
 {
     private Vector2 fingerDown;
     private Vector2 fingerUp;
+    private GameObject[] controls;
 
+    public Spawner spawner;
     public bool detectSwipeOnlyAfterRelease = true;
-
     public float SWIPE_THRESHOLD = 20f;
+
+    private void Start()
+    {
+        controls = GameObject.FindGameObjectsWithTag("UIControl");
+    }
 
     void Update()
     {
@@ -104,21 +110,35 @@ public class SwipeDetector : MonoBehaviour
 
     void OnSwipeUp()
     {
-        Debug.Log("Swipe UP");
+        spawner.SpawnUnit("support");
     }
 
     void OnSwipeDown()
     {
-        Debug.Log("Swipe Down");
+        spawner.SpawnUnit("magic");
     }
 
     void OnSwipeLeft()
     {
-        Debug.Log("Swipe Left");
+        spawner.SpawnUnit("range");
     }
 
     void OnSwipeRight()
     {
-        Debug.Log("Swipe Right");
+        spawner.SpawnUnit("melee");
+    }
+
+    // Get ref to matching UI element
+    private GameObject GetControl(string name)
+    {
+        foreach (GameObject go in controls)
+        {
+            if (go.name == name)
+            {
+                return go;
+            }
+        }
+
+        return null;
     }
 }
